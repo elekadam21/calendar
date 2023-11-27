@@ -1,7 +1,21 @@
 :host {
-    background-color: var(--app-bg-color);
+  background-color: var(--app-bg-color);
+  width: 100%;
 
-    p {
-        margin: 0;
-    }
+  .calendar-table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-header {
+    display: flex;
+  }
+
+  .table-row {
+    display: flex;
+  }
+
+  .table-cell {
+    flex: 1;
+  }
 }
