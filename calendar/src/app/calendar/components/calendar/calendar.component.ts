@@ -10,22 +10,27 @@ export class CalendarComponent {
 
   weekdays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   calendar: CalendarDay[] = [];
-  selectedDate: string = "";
+  selectedDateString: string = "";
+  selectedDate: Date = new Date();
 
   constructor(
 
   ) { }
 
   ngOnInit() {
-    const date = new Date();
-    const today = `${date.getFullYear()}-${(date.getMonth() + 1)}-${(date.getDate() < 10 ? '0' : '')}${date.getDate()}`;
-    this.selectDate(today);
+    this.selectDate(this.selectedDate);
     this.populateCalendar();
   }
 
-  public selectDate(date: string) {
+  public selectDate(date: Date) {
     console.log(date);
     this.selectedDate = date;
+    this.selectedDateString = this.formatDateToString(date);
+  }
+
+  public selectDateByString(date: string) {
+    this.selectedDateString = date;
+    this.selectedDate = this.formatStringToDate(date);
   }
 
   private populateCalendar() {
@@ -81,5 +86,13 @@ export class CalendarComponent {
       hasEvent: false,
       currentMonth,
     };
+  }
+
+  private formatDateToString(date: Date) {
+    return `${date.getFullYear()}-${(date.getMonth() + 1)}-${(date.getDate() < 10 ? '0' : '')}${date.getDate()}`;
+  }
+
+  private formatStringToDate(date: string) {
+    return new Date(date);
   }
 }

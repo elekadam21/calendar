@@ -2,24 +2,71 @@
   background-color: var(--app-bg-color);
   width: 100%;
 
-  .calendar-table {
+  .calendar {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: 1024px;
+    margin: auto;
+  }
+
+  .calendar-inner {
+    padding: 10px 10px;
+  }
+
+  .calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .calendar-prev,
+  .calendar-next {
+    padding: 4px 12px;
+    display: inline-block;
+    background: var(--calendar-nextprev-bg-color);
+    margin: 10px 0 10px 0;
+  }
+
+  .calendar-year-month {
+    display: flex;
+    min-width: 100px;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .calendar-month-year-label {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .calendar-today-date {
+    text-align: center;
+    background: var(--bg-color-darker);
+    padding: 8px 0px;
+    border-radius: 10px;
+    width: 80%;
+    margin: auto;
+  }
+
+  .calendar-body {
     display: flex;
     flex-direction: column;
   }
 
-  .table-header {
+  .calendar-weekdays {
     display: flex;
 
-    .table-cell {
+    .calendar-cell {
       border: 1px solid transparent;
       border-bottom: 1px solid var(--weekdays-border-bottom-color);
     }
   }
 
-  .table-row {
+  .calendar-row {
     display: flex;
 
-    .table-cell:hover {
+    .calendar-cell:hover {
       border: 1px solid var(--calendar-date-hover-color);
       border-radius: 4px;
     }
@@ -30,7 +77,7 @@
     }
   }
 
-  .table-cell {
+  .calendar-cell {
     flex: 1;
     display: flex;
     justify-content: center;
