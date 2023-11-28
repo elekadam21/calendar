@@ -9,13 +9,40 @@
 
   .table-header {
     display: flex;
+
+    .table-cell {
+      border: 1px solid transparent;
+      border-bottom: 1px solid var(--weekdays-border-bottom-color);
+    }
   }
 
   .table-row {
     display: flex;
+
+    .table-cell:hover {
+      border: 1px solid var(--calendar-date-hover-color);
+      border-radius: 4px;
+    }
+
+    .selected {
+      background: var(--calendar-today-color);
+      border-radius: 4px;
+    }
   }
 
   .table-cell {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    min-height: 30px;
+    line-height: 30px;
+    border: 1px solid transparent;
+    margin: 10px 2px 0px;
+
+    &.non-current {
+      color: var(--calendar-prevnext-date-color);
+    }
   }
 }
