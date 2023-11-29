@@ -1,37 +1,63 @@
 <div class="calendar">
-  <div class="calendar-inner">
+  <div class="calendar-inner" [ngSwitch]="view">
+
     <div class="calendar-controls">
-      <div class="calendar-prev">
+      <div class="calendar-prev" (click)="calendarService.changeMonth(-1)">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 128 128">
           <path fill="#FFF" d="M88.2 3.8L35.8 56.23 28 64l7.8 7.78 52.4 52.4 9.78-7.76L45.58 64l52.4-52.4z"></path>
         </svg>
       </div>
       <div class="calendar-year-month">
-        <div class="calendar-month-year-label">
-          {{ "Nov" }} - {{ "2023" }}
+        <div class="calendar-month-year-label" (click)="switchMonthYearSelector()">
+          {{ calendarService.selectedMonth.toLocaleString('default', { month: 'short' }) }} - {{
+          calendarService.selectedDate.getFullYear() }}
         </div>
       </div>
-      <div class="calendar-next">
+      <div class="calendar-next" (click)="calendarService.changeMonth(1)">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 128 128">
           <path fill="#FFF" d="M38.8 124.2l52.4-52.42L99 64l-7.77-7.78-52.4-52.4-9.8 7.77L81.44 64 29 116.42z"></path>
         </svg>
       </div>
     </div>
     <div class="calendar-today-date">
-      {{ selectedDateString }}
+      {{ calendarService.formatDateToString(calendarService.selectedDate) }}
     </div>
-    <div class="calendar-body">
+
+    <!-- NORMAL VIEW -->
+    <div class="calendar-body" *ngSwitchCase="CalendarView.NORMAL">
       <div class="calendar-weekdays">
-        <div class="calendar-cell" *ngFor="let day of weekdays">
-          {{ day.slice(0,3) }}
+        <div class="calendar-cell" *ngFor="let day of this.calendarService.weekdays">
+          {{ day.toLocaleString('default', { weekday: 'short' }) }}
         </div>
       </div>
       <div class="calendar-row" *ngFor="let week of [1,2,3,4,5]; let i = index">
         <div class="calendar-cell" *ngFor="let day of [1,2,3,4,5,6,7]; let j = index"
-          [class.non-current]="!calendar[(i*7)+j].currentMonth"
-          [class.selected]="calendar[(i*7)+j].date === selectedDateString"
-          (click)="selectDateByString(calendar[(i*7)+j].date)">
-          {{ calendar[(i*7)+j].dateShort }}
+          [class.non-current]="!calendarService.calendar[(i*7)+j].currentMonth"
+          [class.selected]="isSelected(calendarService.calendar[(i*7)+j].date, 'date')"
+          (click)="calendarService.selectDateByString(calendarService.calendar[(i*7)+j].dateStr)">
+          {{ calendarService.calendar[(i*7)+j].dateShort }}
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTH PICKER -->
+    <div class="calendar-body" *ngSwitchCase="CalendarView.MONTH_SELECT">
+      <div class="calendar-row" *ngFor="let row of [0,1,2,3]; let i = index">
+        <div class="calendar-cell" *ngFor="let month of [0,1,2,3]; let j = index" [class.non-current]="!((i*4)+j < 12)"
+          [class.selected]="isSelected(this.calendarService.months[(i*4)+j], 'month')"
+          (click)="selectMonth(this.calendarService.months[(i*4)+j])">
+          {{ this.calendarService.months[(i*4)+j].toLocaleString('default', { month: 'short' }) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- YEAR PICKER -->
+    <div class="calendar-body" *ngSwitchCase="CalendarView.YEAR_SELECT">
+      <div class="calendar-row" *ngFor="let row of [0,1,2,3]; let i = index">
+        <div class="calendar-cell" *ngFor="let month of [0,1,2,3]; let j = index"
+          [class.selected]="isSelected(this.calendarService.years[(i*4)+j], 'year')"
+          (click)="selectYear(this.calendarService.years[(i*4)+j])">
+          {{ this.calendarService.years[(i*4)+j].getFullYear() }}
         </div>
       </div>
     </div>

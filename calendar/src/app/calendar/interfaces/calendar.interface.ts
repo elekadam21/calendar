@@ -1,5 +1,6 @@
 export interface CalendarDay {
-  date: string,
+  date: Date,
+  dateStr: string,
   dateShort: number,
   day: number,
   hasEvent: boolean,
