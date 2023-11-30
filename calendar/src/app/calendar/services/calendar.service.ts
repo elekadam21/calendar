@@ -20,12 +20,11 @@ export class CalendarService {
   calendar: CalendarDay[] = [];
   today: Date = new Date();
   selectedDate: Date = new Date();
-  selectedMonth: Date = this.today;
+  selectedYear: Date = this.today;
+  displayedDate: Date = this.today;
 
   constructor() {
     this.getWeekdays();
-    this.getMonths(this.elementCount);
-    this.getYears(this.elementCount);
   }
 
   private getWeekdays() {
@@ -37,25 +36,30 @@ export class CalendarService {
 
   }
 
-  private getMonths(limit: number) {
+  public getMonths(date: Date, limit: number = this.elementCount) {
+    this.months = [];
     for (let i = 0; i < limit; i++) {
-      const date = new Date(2023, i, 1);
-      this.months.push(date);
+      const newDate = new Date(date.getFullYear(), i, 1);
+      this.months.push(newDate);
     }
+    this.displayedDate = new Date(date.getFullYear(), date.getMonth(), 1);
   }
 
-  private getYears(limit: number) {
-    const date = new Date();
+  private getYears(date: Date, limit: number = this.elementCount) {
     const year = date.getFullYear();
 
-    for (let i = 4; i >= 0; i--) {
-      const date = new Date(year - i, 0, 1);
-      this.years.push(date);
-    }
+    if ((this.years.length === 0) || (this.years[0].getFullYear() === year) || (this.years[this.years.length - 1].getFullYear() === year)) {
+      this.years = [];
 
-    for (let i = 1; i < (limit - 4); i++) {
-      const date = new Date(year + i, 0, 1);
-      this.years.push(date);
+      for (let i = 4; i >= 0; i--) {
+        const date = new Date(year - i, 0, 1);
+        this.years.push(date);
+      }
+
+      for (let i = 1; i < (limit - 4); i++) {
+        const date = new Date(year + i, 0, 1);
+        this.years.push(date);
+      }
     }
   }
 
@@ -97,6 +101,8 @@ export class CalendarService {
         this.calendar.unshift(this.createCalendarDay(prevMonthDate, false));
       }
     }
+    this.getMonths(date);
+    this.getYears(date);
   }
 
   private createCalendarDay(date: Date, currentMonth: boolean): CalendarDay {
@@ -118,26 +124,25 @@ export class CalendarService {
     this.selectedDate = this.formatStringToDate(date);
   }
 
-  public changeMonth(num: number) {
-    this.selectedDate.setMonth(this.selectedDate.getMonth() + num);
-    this.selectedDate.setDate(1);
-    this.populateCalendar(this.selectedDate);
-  }
-
-  public selectMonth(date: Date) {
-    this.selectedMonth = date;
+  public changeDate(date: Date) {
+    if (this.isCurrentMonth(date)) {
+      this.populateCalendar(this.today);
+      this.selectDate(this.today);
+      this.displayedDate = this.today;
+    } else {
+      this.populateCalendar(date);
+      this.displayedDate = date;
+    }
   }
 
   public selectYear(date: Date) {
-    const year = date.getFullYear();
-    if ((year === this.today.getFullYear()) && (this.selectedMonth.getMonth() === this.today.getMonth())) {
-      this.populateCalendar(this.today);
-      this.selectDate(this.today);
-    } else {
-      const newDate = new Date(year, this.selectedMonth.getMonth(), 1);
-      this.populateCalendar(newDate);
-      this.selectDate(newDate);
-    }
+    this.selectedYear = date;
+    this.getMonths(date);
+    this.displayedDate = new Date(date);
+  }
+
+  private isCurrentMonth(date: Date) {
+    return (date.getFullYear() === this.today.getFullYear()) && (date.getMonth() === this.today.getMonth())
   }
 
   public formatDateToString(date: Date) {

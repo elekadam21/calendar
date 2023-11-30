@@ -36,6 +36,7 @@
   }
 
   .calendar-month-year-label {
+    display: flex;
     font-weight: 500;
     font-size: 20px;
   }
@@ -52,6 +53,7 @@
   .calendar-body {
     display: flex;
     flex-direction: column;
+    height: 300px;
   }
 
   .calendar-weekdays {
@@ -65,6 +67,7 @@
 
   .calendar-row {
     display: flex;
+    flex: 1;
 
     .calendar-cell:hover {
       border: 1px solid var(--calendar-date-hover-color);

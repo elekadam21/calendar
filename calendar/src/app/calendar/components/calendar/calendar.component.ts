@@ -29,7 +29,7 @@ export class CalendarComponent {
         this.view = CalendarView.YEAR_SELECT;
         break;
       case CalendarView.YEAR_SELECT:
-        this.view = CalendarView.NORMAL;
+        this.view = CalendarView.MONTH_SELECT;
         break;
       default:
         console.log("error");
@@ -46,7 +46,7 @@ export class CalendarComponent {
       case 'month':
         return item.getFullYear() === selectedDate.getFullYear() && item.getMonth() === selectedDate.getMonth();
       case 'year':
-        return item.getFullYear() === selectedDate.getFullYear();
+        return item.getFullYear() === this.calendarService.displayedDate.getFullYear();
       default:
         console.error("Invalid type");
         return false;
@@ -54,12 +54,33 @@ export class CalendarComponent {
   }
 
   public selectMonth(date: Date) {
-    this.calendarService.selectMonth(date);
-    this.switchMonthYearSelector();
+    const newDate = new Date(this.calendarService.selectedYear.getFullYear(), date.getMonth(), 1)
+    this.calendarService.changeDate(newDate);
+    this.view = CalendarView.NORMAL;
   }
 
   public selectYear(date: Date) {
     this.calendarService.selectYear(date);
-    this.switchMonthYearSelector();
+    this.view = CalendarView.MONTH_SELECT;
+  }
+
+  public nextOrPrev(num: number) {
+    switch (this.view) {
+      case CalendarView.NORMAL:
+        const normalDate = new Date(this.calendarService.displayedDate.getFullYear(), this.calendarService.displayedDate.getMonth() + num, 1);
+        this.calendarService.changeDate(normalDate);
+        break;
+      case CalendarView.MONTH_SELECT:
+        const monthDate = new Date(this.calendarService.displayedDate.getFullYear() + num, this.calendarService.displayedDate.getMonth(), 1);
+        this.calendarService.getMonths(monthDate);
+        break;
+      case CalendarView.YEAR_SELECT:
+        const yearDate = new Date(this.calendarService.displayedDate.getFullYear() + num, this.calendarService.displayedDate.getMonth(), 1);
+        this.calendarService.changeDate(yearDate);
+        break;
+      default:
+        console.log("error");
+        break;
+    }
   }
 }
