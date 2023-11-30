@@ -14,7 +14,7 @@
             calendarService.years[calendarService.years.length-1].getFullYear() }}
           </div>
           <div *ngIf="(this.view === CalendarView.NORMAL)">
-            {{ calendarService.displayedDate.toLocaleString('default', { month: 'short' }) }}
+            {{ calendarService.displayedDate.toLocaleString('default', { month: wordSize }) }}
           </div>
           <div *ngIf="(this.view === CalendarView.NORMAL)">-</div>
           <div *ngIf="(this.view === CalendarView.NORMAL || this.view === CalendarView.MONTH_SELECT)">
@@ -36,7 +36,7 @@
     <div class="calendar-body" *ngSwitchCase="CalendarView.NORMAL">
       <div class="calendar-weekdays">
         <div class="calendar-cell" *ngFor="let day of this.calendarService.weekdays">
-          {{ day.toLocaleString('default', { weekday: 'short' }) }}
+          {{ day.toLocaleString('default', { weekday: wordSize }) }}
         </div>
       </div>
       <div class="calendar-row" *ngFor="let week of [1,2,3,4,5]; let i = index">
@@ -55,7 +55,7 @@
         <div class="calendar-cell" *ngFor="let month of [0,1,2,3]; let j = index" [class.non-current]="!((i*4)+j < 12)"
           [class.selected]="isSelected(this.calendarService.months[(i*4)+j], 'month')"
           (click)="selectMonth(this.calendarService.months[(i*4)+j])">
-          {{ this.calendarService.months[(i*4)+j].toLocaleString('default', { month: 'short' }) }}
+          {{ this.calendarService.months[(i*4)+j].toLocaleString('default', { month: wordSize }) }}
         </div>
       </div>
     </div>

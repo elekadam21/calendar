@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { DeviceService } from './services/device.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'calendar';
+  
+  constructor(
+    private deviceService: DeviceService
+    ) { }
+
+  ngOnInit() {
+    this.deviceService.screenWidth = window.innerWidth;
+    this.deviceService.screenHeight = window.innerHeight;      
+  }
+  
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.deviceService.screenWidth = window.innerWidth;
+    this.deviceService.screenHeight = window.innerHeight;
+  }
 }

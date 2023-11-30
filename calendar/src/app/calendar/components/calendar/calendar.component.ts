@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CalendarDay } from '../../interfaces/calendar.interface';
 import { CalendarService, CalendarView } from '../../services/calendar.service';
+import { DeviceService } from 'src/app/services/device.service';
 
 @Component({
   selector: 'calendar',
@@ -10,14 +11,23 @@ import { CalendarService, CalendarView } from '../../services/calendar.service';
 export class CalendarComponent {
   CalendarView = CalendarView;
   view: CalendarView = CalendarView.NORMAL;
+  wordSize: "long" | "short" | "narrow" | undefined = "short";
 
   constructor(
-    public calendarService: CalendarService
+    public calendarService: CalendarService,
+    private deviceService: DeviceService,
   ) { }
 
   ngOnInit() {
     this.calendarService.selectDate(this.calendarService.selectedDate);
     this.calendarService.populateCalendar(this.calendarService.selectedDate);
+
+    if (this.deviceService.screenWidth < 750) {
+      this.wordSize = "short";
+    } else {
+      this.wordSize = "long";
+    }
+    
   }
 
   public switchMonthYearSelector() {
