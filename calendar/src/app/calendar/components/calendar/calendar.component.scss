@@ -26,6 +26,7 @@
     display: inline-block;
     background: var(--calendar-nextprev-bg-color);
     margin: 10px 0 10px 0;
+    cursor: pointer;
   }
 
   .calendar-year-month {
@@ -39,6 +40,7 @@
     display: flex;
     font-weight: 500;
     font-size: 20px;
+    cursor: pointer;
   }
 
   .calendar-today-date {
@@ -90,6 +92,7 @@
     line-height: 30px;
     border: 1px solid transparent;
     margin: 10px 2px 0px;
+    cursor: pointer;
 
     &.non-current {
       color: var(--calendar-prevnext-date-color);
