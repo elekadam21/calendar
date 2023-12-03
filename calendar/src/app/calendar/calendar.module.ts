@@ -3,6 +3,7 @@ import { calendarRoutes } from "./calendar.routes";
 import { CalendarComponent } from "./components/calendar/calendar.component";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { CalendarEventsComponent } from "./components/calendar-events/calendar-events.component";
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { CommonModule } from "@angular/common";
   ],
   declarations: [
     CalendarComponent,
+    CalendarEventsComponent
   ],
 })
 export class CalendarModule { }

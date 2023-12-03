@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CalendarDay } from "../interfaces/calendar.interface";
+import { CalendarSourceService } from "./calendar-source.service";
 
 export enum CalendarView {
   NORMAL,
@@ -23,8 +24,14 @@ export class CalendarService {
   selectedYear: Date = this.today;
   displayedDate: Date = this.today;
 
-  constructor() {
+  constructor(
+    private calendarSourceService: CalendarSourceService
+  ) {
     this.getWeekdays();
+    this.calendarSourceService.getMatches().subscribe((res) => {
+      console.log(res);
+    });
+
   }
 
   private getWeekdays() {
