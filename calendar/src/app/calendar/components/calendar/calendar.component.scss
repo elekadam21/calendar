@@ -46,6 +46,8 @@
   .calendar-today-date {
     text-align: center;
     background: var(--bg-color-darker);
+    color: var(--primary-color);
+    font-weight: 600;
     padding: 8px 0px;
     border-radius: 10px;
     width: 80%;
@@ -87,6 +89,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 4px;
     min-height: 30px;
     line-height: 30px;
@@ -96,6 +99,23 @@
 
     &.non-current {
       color: var(--calendar-prevnext-date-color);
+    }
+
+    .dot {
+      margin: 5px;
+      height: 10px;
+      width: 10px;
+      background-color: #fff;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .empty {
+      height: 20px;
+      width: 20px;
+      background-color: var(--app-bg-color);
+      border-radius: 50%;
+      display: inline-block;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CalendarDay } from '../../interfaces/calendar.interface';
 import { CalendarService, CalendarView } from '../../services/calendar.service';
 import { DeviceService } from 'src/app/services/device.service';
@@ -16,18 +16,23 @@ export class CalendarComponent {
   constructor(
     public calendarService: CalendarService,
     private deviceService: DeviceService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
-    this.calendarService.selectDate(this.calendarService.selectedDate);
     this.calendarService.populateCalendar(this.calendarService.selectedDate);
+
+    setTimeout(() => {
+      this.calendarService.selectDate(this.calendarService.selectedDate);
+      this.cdr.detectChanges();
+    }, 1000);
 
     if (this.deviceService.screenWidth < 750) {
       this.wordSize = "short";
     } else {
       this.wordSize = "long";
     }
-    
+
   }
 
   public switchMonthYearSelector() {
@@ -61,6 +66,11 @@ export class CalendarComponent {
         console.error("Invalid type");
         return false;
     }
+  }
+
+  public selectDate(date: Date) {
+    this.calendarService.selectDate(date);
+    // this.cdr.detectChanges();
   }
 
   public selectMonth(date: Date) {

@@ -1,3 +1,5 @@
+import { Match } from "./match.interface";
+
 export interface CalendarDay {
   date: Date,
   dateStr: string,
@@ -5,4 +7,5 @@ export interface CalendarDay {
   day: number,
   hasEvent: boolean,
   currentMonth: boolean,
+  matches: Match[],
 }

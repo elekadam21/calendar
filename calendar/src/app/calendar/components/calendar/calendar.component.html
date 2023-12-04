@@ -52,8 +52,10 @@
         <div class="calendar-cell" *ngFor="let day of [1,2,3,4,5,6,7]; let j = index"
           [class.non-current]="!calendarService.calendar[(i*7)+j].currentMonth"
           [class.selected]="isSelected(calendarService.calendar[(i*7)+j].date, 'date')"
-          (click)="calendarService.selectDateByString(calendarService.calendar[(i*7)+j].dateStr)">
-          {{ calendarService.calendar[(i*7)+j].dateShort }}
+          (click)="selectDate(calendarService.calendar[(i*7)+j].date)">
+          <span>{{ calendarService.calendar[(i*7)+j].dateShort }}</span>
+          <!-- <span class="dot" *ngIf="calendarService.calendar[(i*7)+j].matches.length"></span>
+          <span class="empty" *ngIf="!calendarService.calendar[(i*7)+j].matches.length"></span> -->
         </div>
       </div>
     </div>
@@ -81,3 +83,13 @@
     </div>
   </div>
 </div>
+
+<div class="match-list">
+  <ng-container *ngFor="let item of calendarService.selectedDay?.matches">
+    <div class="match-card">
+      {{ item.season }}
+    </div>
+  </ng-container>
+</div>
+
+<float-button></float-button>

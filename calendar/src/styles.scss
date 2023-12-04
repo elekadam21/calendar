@@ -3,15 +3,14 @@
 :root {
   --bg-color: #262829;
   --font-color: #fff;
+  --primary-color: #329081;
   --weekdays-border-bottom-color: #404040;
   --calendar-date-hover-color: #505050;
   --bg-color-darker: #1b1f21;
   --calendar-today-color: linear-gradient(to bottom, #03a9f4, #2196f3);
-  --calendar-today-innerborder-color: transparent;
   --calendar-nextprev-bg-color: transparent;
-  --next-prev-arrow-color: #fff;
-  --calendar-border-radius: 16px;
   --calendar-prevnext-date-color: #484848;
+  --next-prev-arrow-color: #fff;
 }
 
 * {

@@ -23,15 +23,12 @@ export class CalendarService {
   selectedDate: Date = new Date();
   selectedYear: Date = this.today;
   displayedDate: Date = this.today;
+  selectedDay: CalendarDay;
 
   constructor(
     private calendarSourceService: CalendarSourceService
   ) {
     this.getWeekdays();
-    this.calendarSourceService.getMatches().subscribe((res) => {
-      console.log(res);
-    });
-
   }
 
   private getWeekdays() {
@@ -110,6 +107,22 @@ export class CalendarService {
     }
     this.getMonths(date);
     this.getYears(date);
+    this.allocateMatches();
+    console.log(this.calendar);
+
+  }
+
+  private allocateMatches() {
+    this.calendarSourceService.getMatches().subscribe((res) => {
+      res?.data.forEach(match => {
+        const matchDay = this.calendar.find((day) => day.dateStr === match.dateVenue);
+
+        if (matchDay) {
+          matchDay.matches.push(match);
+        }
+
+      });
+    });
   }
 
   private createCalendarDay(date: Date, currentMonth: boolean): CalendarDay {
@@ -120,15 +133,21 @@ export class CalendarService {
       day: date.getDay(),
       hasEvent: false,
       currentMonth,
+      matches: [],
     };
   }
 
   public selectDate(date: Date) {
     this.selectedDate = date;
+    this.selectDay(date);
   }
 
-  public selectDateByString(date: string) {
-    this.selectedDate = this.formatStringToDate(date);
+  private selectDay(date: Date) {
+    const day = this.calendar.find((day) => day.date === date)
+
+    if (day) {
+      this.selectedDay = day;
+    }
   }
 
   public changeDate(date: Date) {
