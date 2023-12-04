@@ -108,8 +108,11 @@ export class CalendarService {
     this.getMonths(date);
     this.getYears(date);
     this.allocateMatches();
-    console.log(this.calendar);
 
+    if (!this.selectedDay) {
+      const today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate())
+      this.selectDay(today);
+    }
   }
 
   private allocateMatches() {
@@ -143,7 +146,10 @@ export class CalendarService {
   }
 
   private selectDay(date: Date) {
-    const day = this.calendar.find((day) => day.date === date)
+    const day = this.calendar.find((day) => (
+      (day.date.getFullYear() === date.getFullYear()) &&
+      (day.date.getMonth() === date.getMonth()) &&
+      (day.date.getDate() === date.getDate())))
 
     if (day) {
       this.selectedDay = day;

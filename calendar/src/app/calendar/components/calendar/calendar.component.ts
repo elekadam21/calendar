@@ -22,11 +22,6 @@ export class CalendarComponent {
   ngOnInit() {
     this.calendarService.populateCalendar(this.calendarService.selectedDate);
 
-    setTimeout(() => {
-      this.calendarService.selectDate(this.calendarService.selectedDate);
-      this.cdr.detectChanges();
-    }, 1000);
-
     if (this.deviceService.screenWidth < 750) {
       this.wordSize = "short";
     } else {
