@@ -37,12 +37,14 @@
     </div>
 
     <!-- CURRENT DATE SELECTION -->
-    <div class="calendar-today-date">
+    <div class="calendar-today-date" (click)="openCalendar()">
+      <calendar-icon></calendar-icon>
       {{ calendarService.formatDateToString(calendarService.selectedDate) }}
+      <div class="fill"></div>
     </div>
 
     <!-- NORMAL VIEW -->
-    <div class="calendar-body" *ngSwitchCase="CalendarView.NORMAL">
+    <div class="calendar-body" *ngSwitchCase="CalendarView.NORMAL" [class.collapsed]="isCalendarCollapsed">
       <div class="calendar-weekdays">
         <div class="calendar-cell" *ngFor="let day of this.calendarService.weekdays">
           {{ day.toLocaleString('default', { weekday: wordSize }) }}
@@ -52,7 +54,7 @@
         <div class="calendar-cell" *ngFor="let day of [1,2,3,4,5,6,7]; let j = index"
           [class.non-current]="!calendarService.calendar[(i*7)+j].currentMonth"
           [class.selected]="isSelected(calendarService.calendar[(i*7)+j].date, 'date')"
-          (click)="selectDate(calendarService.calendar[(i*7)+j].date)">
+          (click)="selectDate(calendarService.calendar[(i*7)+j])">
           <span>{{ calendarService.calendar[(i*7)+j].dateShort }}</span>
           <span class="dot" *ngIf="calendarService.calendar[(i*7)+j].matches.length"></span>
           <span class="empty" *ngIf="!calendarService.calendar[(i*7)+j].matches.length"></span>
@@ -61,7 +63,7 @@
     </div>
 
     <!-- MONTH PICKER -->
-    <div class="calendar-body" *ngSwitchCase="CalendarView.MONTH_SELECT">
+    <div class="calendar-body" *ngSwitchCase="CalendarView.MONTH_SELECT" [class.collapsed]="isCalendarCollapsed">
       <div class="calendar-row" *ngFor="let row of [0,1,2,3]; let i = index">
         <div class="calendar-cell" *ngFor="let month of [0,1,2,3]; let j = index" [class.non-current]="!((i*4)+j < 12)"
           [class.selected]="isSelected(this.calendarService.months[(i*4)+j], 'month')"
@@ -72,7 +74,7 @@
     </div>
 
     <!-- YEAR PICKER -->
-    <div class="calendar-body" *ngSwitchCase="CalendarView.YEAR_SELECT">
+    <div class="calendar-body" *ngSwitchCase="CalendarView.YEAR_SELECT" [class.collapsed]="isCalendarCollapsed">
       <div class="calendar-row" *ngFor="let row of [0,1,2,3]; let i = index">
         <div class="calendar-cell" *ngFor="let month of [0,1,2,3]; let j = index"
           [class.selected]="isSelected(this.calendarService.years[(i*4)+j], 'year')"
@@ -84,12 +86,19 @@
   </div>
 </div>
 
-<div class="match-list">
-  <ng-container *ngFor="let item of calendarService.selectedDay?.matches">
-    <div class="match-card">
-      {{ item.season }}
-    </div>
-  </ng-container>
-</div>
+<ng-template #noMatches>
+  <div class="no-matches">
+    <span>No matches on this day</span>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="calendarService.selectedDay?.matches?.length; else noMatches">
+  <div class="match-list">
+    <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
+    <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
+    <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
+  </div>
+</ng-container>
+
 
 <float-button></float-button>

@@ -6,6 +6,7 @@ import { CommonModule } from "@angular/common";
 import { CalendarEventsComponent } from "./components/calendar-events/calendar-events.component";
 import { FloatButtonComponent } from "./components/float-button/float-button.component";
 import { MatchCardComponent } from "./components/match-card/match-card.component";
+import { CalendarIconComponent } from "./components/calendar-icon/calendar-icon.component";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { MatchCardComponent } from "./components/match-card/match-card.component
     CalendarComponent,
     CalendarEventsComponent,
     FloatButtonComponent,
-    MatchCardComponent
+    MatchCardComponent,
+    CalendarIconComponent,
   ],
 })
 export class CalendarModule { }

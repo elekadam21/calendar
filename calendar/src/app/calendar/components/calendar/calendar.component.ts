@@ -12,11 +12,11 @@ export class CalendarComponent {
   CalendarView = CalendarView;
   view: CalendarView = CalendarView.NORMAL;
   wordSize: "long" | "short" | "narrow" | undefined = "short";
+  isCalendarCollapsed = false;
 
   constructor(
     public calendarService: CalendarService,
     private deviceService: DeviceService,
-    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -45,6 +45,7 @@ export class CalendarComponent {
         console.log("error");
         break;
     }
+    this.openCalendar();
   }
 
   public isSelected(item: Date, type: string) {
@@ -63,9 +64,15 @@ export class CalendarComponent {
     }
   }
 
-  public selectDate(date: Date) {
-    this.calendarService.selectDate(date);
-    // this.cdr.detectChanges();
+  public openCalendar() {
+    this.isCalendarCollapsed = false;
+  }
+
+  public selectDate(day: CalendarDay) {
+    this.calendarService.selectDate(day.date);
+    if (day.matches.length) {
+      this.isCalendarCollapsed = true;
+    }
   }
 
   public selectMonth(date: Date) {
@@ -97,5 +104,6 @@ export class CalendarComponent {
         console.log("error");
         break;
     }
+    this.openCalendar();
   }
 }

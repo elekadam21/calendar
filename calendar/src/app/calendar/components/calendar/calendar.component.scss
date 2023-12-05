@@ -1,6 +1,7 @@
 :host {
   background-color: var(--app-bg-color);
   width: 100%;
+  height: 100%;
 
   .calendar {
     position: relative;
@@ -44,6 +45,10 @@
   }
 
   .calendar-today-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
     text-align: center;
     background: var(--bg-color-darker);
     color: var(--primary-color);
@@ -52,12 +57,23 @@
     border-radius: 10px;
     width: 80%;
     margin: auto;
+
+    .fill {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .calendar-body {
     display: flex;
     flex-direction: column;
     height: 350px;
+    transition: height 0.1s;
+
+    &.collapsed {
+      height: 0px;
+      overflow: hidden;
+    }
   }
 
   .calendar-weekdays {
@@ -116,5 +132,13 @@
       background-color: var(--app-bg-color);
       display: inline-block;
     }
+  }
+
+  .match-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
   }
 }
