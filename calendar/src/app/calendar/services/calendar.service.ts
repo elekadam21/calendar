@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { CalendarDay } from "../interfaces/calendar.interface";
 import { CalendarSourceService } from "./calendar-source.service";
+import { Match } from "../interfaces/match.interface";
+import { Observable, map } from "rxjs";
 
 export enum CalendarView {
   NORMAL,
@@ -183,5 +185,14 @@ export class CalendarService {
 
   public formatStringToDate(date: string) {
     return new Date(date);
+  }
+
+  getMatchById(id: string): Observable<Match> {
+    return this.calendarSourceService.getMatches().pipe(
+      map((res) => {
+        const match = res?.data.find((match) => match.matchId === id);
+        return match!;
+      })
+    );
   }
 }

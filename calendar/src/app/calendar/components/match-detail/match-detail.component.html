@@ -1,1 +1,4 @@
-<p>detail</p>
+<button [routerLink]="['']">goback</button>
+<div class="match-details" *ngIf="match" >
+    {{ match.homeTeam ? match.homeTeam.name : "unknown" }} - {{ match.awayTeam.name }}
+</div>
