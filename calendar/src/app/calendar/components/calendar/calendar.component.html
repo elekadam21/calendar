@@ -94,7 +94,7 @@
 
 <ng-container *ngIf="calendarService.selectedDay?.matches?.length; else noMatches">
   <div class="match-list">
-    <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
+    <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match" [routerLink]="['/match-detail', match.matchId]"></match-card>
     <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
     <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"></match-card>
   </div>

@@ -39,4 +39,5 @@ export interface Match {
   group: string;
   originCompetitionId: string;
   originCompetitionName: string;
+  matchId: string;
 }

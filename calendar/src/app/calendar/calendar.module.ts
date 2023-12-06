@@ -7,6 +7,7 @@ import { CalendarEventsComponent } from "./components/calendar-events/calendar-e
 import { FloatButtonComponent } from "./components/float-button/float-button.component";
 import { MatchCardComponent } from "./components/match-card/match-card.component";
 import { CalendarIconComponent } from "./components/calendar-icon/calendar-icon.component";
+import { MatchDetailComponent } from "./components/match-detail/match-detail.component";
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { CalendarIconComponent } from "./components/calendar-icon/calendar-icon.
     FloatButtonComponent,
     MatchCardComponent,
     CalendarIconComponent,
+    MatchDetailComponent,
   ],
 })
 export class CalendarModule { }
