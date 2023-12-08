@@ -1,9 +1,9 @@
 import { Route } from "@angular/router";
-import { CalendarEventsComponent } from "./components/calendar-events/calendar-events.component";
 import { MatchDetailComponent } from "./components/match-detail/match-detail.component";
+import { CalendarComponent } from "./components/calendar/calendar.component";
 
 export const calendarRoutes: Route[] = [
-  { path: '', component: CalendarEventsComponent },
+  { path: '', component: CalendarComponent },
   { path: 'match-detail/:id', component: MatchDetailComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' }, 
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ]
