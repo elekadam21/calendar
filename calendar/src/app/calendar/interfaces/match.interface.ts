@@ -32,8 +32,8 @@ export interface Match {
   timeVenueUTC: string;
   dateVenue: string;
   stadium: string;
-  homeTeam: Team;
-  awayTeam: Team;
+  homeTeam: Team | null;
+  awayTeam: Team | null;
   result: Result | null;
   stage: Stage;
   group: string;

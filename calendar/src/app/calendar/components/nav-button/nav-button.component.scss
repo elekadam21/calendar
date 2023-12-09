@@ -1,0 +1,10 @@
+:host {
+  .calendar-prev,
+  .calendar-next {
+    padding: 4px 12px;
+    display: inline-block;
+    background: var(--calendar-nextprev-bg-color);
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+  }
+}

@@ -1,4 +1,70 @@
-<button [routerLink]="['']">goback</button>
-<div class="match-details" *ngIf="match" >
-    {{ match.homeTeam ? match.homeTeam.name : "unknown" }} - {{ match.awayTeam.name }}
+<div class="match-detail" *ngIf="match">
+  <div class="header">
+    <nav-button [direction]="'left'" [routerLink]="['']"></nav-button>
+    <div class="competition">{{ match.originCompetitionName }}</div>
+    <div class="fill"></div>
+  </div>
+
+  <div class="match-card" *ngIf="match">
+    <div class="stage">{{ match.stage.name }}</div>
+    <div class="time">
+      <span>{{ match.dateVenue }}</span>
+      <span>{{ ' - ' }}</span>
+      <span>{{ [match.dateVenue, match.timeVenueUTC] | utcToLocal }}</span>
+    </div>
+    <div class="match-info">
+      <div class="home-team">
+        <div class="logo">
+          <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
+        </div>
+        <div class="team-name">
+          {{ match.homeTeam ? match.homeTeam.name : "TBA" }}
+        </div>
+        <div class="country">
+          {{ match.homeTeam?.teamCountryCode ? '(' + match.homeTeam?.teamCountryCode + ')' : '' }}
+        </div>
+      </div>
+      <div class="center-info">
+        <div class="score">
+          <div class="home-score">{{ match.result?.homeGoals ? match.result?.homeGoals : ' ' }}</div>
+          <span>-</span>
+          <div class="away-score">{{ match.result?.awayGoals ? match.result?.awayGoals : ' ' }}</div>
+        </div>
+        <div class="status">{{ match.status }}</div>
+      </div>
+      <div class="home-team">
+        <div class="logo">
+          <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
+        </div>
+        <div class="team-name">
+          {{ match.awayTeam ? match.awayTeam.name : "TBA" }}
+        </div>
+        <div class="country">
+          {{ match.awayTeam?.teamCountryCode ? '(' + match.awayTeam?.teamCountryCode + ')' : '' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="top-text">summary</div>
+
+    <div class="first-half">
+      <div class="divider">
+        <span>1st half</span>
+      </div>
+      <div class="half-data">
+        <span>-</span>
+      </div>
+    </div>
+
+    <div class="second-half">
+      <div class="divider">
+        <span>2nd half</span>
+      </div>
+      <div class="half-data">
+        <span>-</span>
+      </div>
+    </div>
+  </div>
 </div>

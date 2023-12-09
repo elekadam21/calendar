@@ -8,6 +8,7 @@ import { MatchCardComponent } from "./components/match-card/match-card.component
 import { CalendarIconComponent } from "./components/calendar-icon/calendar-icon.component";
 import { MatchDetailComponent } from "./components/match-detail/match-detail.component";
 import { UtcToLocalPipe } from "../pipes/utc-to-local.pipe";
+import { NavigationButtonComponent } from "./components/nav-button/nav-button.component";
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { UtcToLocalPipe } from "../pipes/utc-to-local.pipe";
     CalendarIconComponent,
     MatchDetailComponent,
     UtcToLocalPipe,
+    NavigationButtonComponent,
   ],
 })
 export class CalendarModule { }

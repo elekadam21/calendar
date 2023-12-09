@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 90%;
-  background-color: #00141e;
+  background-color: var(--primary-color);
   border-radius: 4px;
   padding: 5px;
 
@@ -14,7 +14,7 @@
 
   .competition,
   .time {
-    color: #c8cdcd;
+    color: var(--secondary-font-color);
     font-size: 13px;
     font-weight: 500;
   }

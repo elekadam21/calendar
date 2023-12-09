@@ -1,4 +1,139 @@
 :host {
-    height: 100%;
-    display: block;
+  display: block;
+  min-height: inherit;
+  background-color: var(--secondary-color);
+
+  .match-detail {
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--primary-color);
+
+      .fill {
+        width: 44px;
+        height: 52px;
+      }
+    }
+  }
+
+  .match-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--primary-color);
+  }
+
+  .stage {
+    padding-top: 12px;
+  }
+
+  .competition,
+  .time,
+  .stage {
+    color: var(--secondary-font-color);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .match-info {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    .home-team,
+    .away-team {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .logo {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          max-width: 26%;
+          height: auto;
+          padding: 8px;
+          background-color: #c80037;
+          border-radius: 4px;
+        }
+      }
+
+      .team-name {
+        padding-top: 8px;
+      }
+
+      .country {
+        flex: 1;
+        color: var(--secondary-font-color);
+        font-size: 13px;
+        font-weight: 500;
+      }
+    }
+
+    .center-info {
+      min-width: 110px;
+      flex: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+
+      .score {
+        display: flex;
+        gap: 4px;
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .status {
+        font-weight: 500;
+        font-size: 14px;
+        padding-top: 8px;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+
+    .top-text {
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--primary-color);
+    }
+
+    .first-half,
+    .second-half {
+      display: flex;
+      flex-direction: column;
+
+      .divider {
+        background-color: var(--primary-color);
+        text-transform: uppercase;
+        color: var(--secondary-font-color);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px;
+      }
+
+      .half-data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+      }
+    }
+  }
 }
