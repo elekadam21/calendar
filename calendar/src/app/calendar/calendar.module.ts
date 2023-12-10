@@ -9,10 +9,14 @@ import { CalendarIconComponent } from "./components/calendar-icon/calendar-icon.
 import { MatchDetailComponent } from "./components/match-detail/match-detail.component";
 import { UtcToLocalPipe } from "../pipes/utc-to-local.pipe";
 import { NavigationButtonComponent } from "./components/nav-button/nav-button.component";
+import { ReactiveFormsModule } from "@angular/forms";
+import { NewMatchComponent } from "./components/new-match/new-match.component";
+import { SaveButtonComponent } from "./components/save-button/save-button.component";
 
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild(calendarRoutes),
   ],
   declarations: [
@@ -23,6 +27,8 @@ import { NavigationButtonComponent } from "./components/nav-button/nav-button.co
     MatchDetailComponent,
     UtcToLocalPipe,
     NavigationButtonComponent,
+    NewMatchComponent,
+    SaveButtonComponent,
   ],
 })
 export class CalendarModule { }

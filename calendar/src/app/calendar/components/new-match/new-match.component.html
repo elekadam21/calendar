@@ -1,0 +1,94 @@
+<form [formGroup]="matchForm" (ngSubmit)="save()" [autocomplete]="'off'">
+  <div class="match-detail">
+    <div class="header">
+      <nav-button [direction]="'left'" [routerLink]="['']"></nav-button>
+      <div class="date">{{ matchForm.value.dateVenue }}</div>
+      <save-button type="submit">Submit</save-button>
+    </div>
+
+    <div class="match-card">
+      <div class="time">
+        <label for="timeVenueUTC">Time:</label>
+        <input type="time" id="timeVenueUTC" formControlName="timeVenueUTC">
+      </div>
+
+      <div class="match-info">
+        <div class="home-team" formGroupName="homeTeam">
+          <div class="logo">
+            <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
+          </div>
+          <div class="team-name">
+            <label for="homeTeamName">Home Team Name:</label>
+            <input type="text" id="homeTeamName" formControlName="name" placeholder="Home Team">
+          </div>
+          <div class="country">
+            <label for="homeTeamCountry">Home Team Country:</label>
+            <input type="text" id="homeTeamCountry" formControlName="teamCountryCode" placeholder="Country Code">
+          </div>
+        </div>
+        <div class="center-info">
+          <div class="score" formGroupName="result">
+            <div class="home-score" *ngIf="isPlayed">
+              <label for="homeGoals">Home Team Score:</label>
+              <input type="text" id="homeGoals" formControlName="homeGoals">
+            </div>
+            <span>-</span>
+            <div class="away-score" *ngIf="isPlayed">
+              <label for="awayGoals">Away Team Score:</label>
+              <input type="text" id="awayGoals" formControlName="awayGoals">
+            </div>
+          </div>
+          <div class="status">{{ matchForm.value.status }}</div>
+        </div>
+        <div class="away-team" formGroupName="awayTeam">
+          <div class="logo">
+            <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
+          </div>
+          <div class="team-name">
+            <label for="awayTeamName">Away Team Name:</label>
+            <input type="text" id="awayTeamName" formControlName="name" placeholder="Away Team">
+          </div>
+          <div class="country">
+            <label for="awayTeamCountry">Away Team Country:</label>
+            <input type="text" id="awayTeamCountry" formControlName="teamCountryCode" placeholder="Country Code">
+          </div>
+        </div>
+      </div>
+      <div class="competition">
+        <label for="originCompetitionName">Competition Name:</label>
+        <input type="text" id="originCompetitionName" formControlName="originCompetitionName"
+          placeholder="Competition Name">
+      </div>
+      <div class="stage" formGroupName="stage">
+        <label for="stageName">Stage Name:</label>
+        <input type="text" id="stageName" formControlName="name" placeholder="Stage">
+      </div>
+      <div class="stadium">
+        <label for="stadium">Stage Name:</label>
+        <input type="text" id="stadium" formControlName="stadium" placeholder="Stadium">
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="top-text">summary</div>
+
+      <div class="first-half">
+        <div class="divider">
+          <span>1st half</span>
+        </div>
+        <div class="half-data">
+          <span>-</span>
+        </div>
+      </div>
+
+      <div class="second-half">
+        <div class="divider">
+          <span>2nd half</span>
+        </div>
+        <div class="half-data">
+          <span>-</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

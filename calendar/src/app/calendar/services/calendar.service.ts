@@ -195,4 +195,33 @@ export class CalendarService {
       })
     );
   }
+
+  generateMatchId() {
+    return this.calendarSourceService.getMatches().pipe(
+      map((res) => {
+        let newId: string;
+        const ids: number[] = [];
+        res.data.map((match) => ids.push(parseInt(match.matchId)))
+        ids.sort().reverse();
+        if (ids.length) {
+          newId = (ids[0] + 1).toString();
+        } else {
+          newId = '1';
+        }
+
+        return newId;
+      })
+    );
+  }
+
+  addNewMatch(match: Match) {
+    this.generateMatchId().subscribe((id) => {
+      match.matchId = id;
+      this.calendar.forEach((day) => {
+        if (day.dateStr === match.dateVenue) {
+          day.matches.push(match)
+        }
+      })
+    });
+  }
 }
