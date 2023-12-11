@@ -12,7 +12,7 @@ export class CalendarSourceService {
 
   dataUrl = 'assets/sportData.json';
 
-  getMatches() {
+  public getMatches() {
     return this.http.get<{ data: Match[] }>(this.dataUrl);
   }
 }

@@ -7,18 +7,18 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 const components = [
-    FloatButtonComponent,
-    CalendarIconComponent,
-    UtcToLocalPipe,
-    NavigationButtonComponent,
-    SaveButtonComponent,
+  FloatButtonComponent,
+  CalendarIconComponent,
+  UtcToLocalPipe,
+  NavigationButtonComponent,
+  SaveButtonComponent,
 ]
 
 @NgModule({
-    imports: [
-        CommonModule
-      ],
-    declarations: components,
-    exports: components,
-  })
-  export class UiKitModule { }
+  imports: [
+    CommonModule
+  ],
+  declarations: components,
+  exports: components,
+})
+export class UiKitModule { }
