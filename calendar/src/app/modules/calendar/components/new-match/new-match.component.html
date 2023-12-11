@@ -6,6 +6,7 @@
       <save-button type="submit">Submit</save-button>
     </div>
 
+    <!-- TIME -->
     <div class="match-card">
       <div class="time">
         <label for="timeVenueUTC">Time:</label>
@@ -13,6 +14,7 @@
       </div>
 
       <div class="match-info">
+
         <div class="home-team" formGroupName="homeTeam">
           <div class="logo">
             <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
@@ -26,6 +28,7 @@
             <input type="text" id="homeTeamCountry" formControlName="teamCountryCode" placeholder="Country Code">
           </div>
         </div>
+
         <div class="center-info">
           <div class="score" formGroupName="result">
             <div class="home-score" *ngIf="isPlayed">
@@ -40,6 +43,7 @@
           </div>
           <div class="status">{{ matchForm.value.status }}</div>
         </div>
+
         <div class="away-team" formGroupName="awayTeam">
           <div class="logo">
             <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
@@ -53,22 +57,28 @@
             <input type="text" id="awayTeamCountry" formControlName="teamCountryCode" placeholder="Country Code">
           </div>
         </div>
+
       </div>
+
       <div class="competition">
         <label for="originCompetitionName">Competition Name:</label>
         <input type="text" id="originCompetitionName" formControlName="originCompetitionName"
           placeholder="Competition Name">
       </div>
+
       <div class="stage" formGroupName="stage">
         <label for="stageName">Stage Name:</label>
         <input type="text" id="stageName" formControlName="name" placeholder="Stage">
       </div>
+
       <div class="stadium">
         <label for="stadium">Stage Name:</label>
         <input type="text" id="stadium" formControlName="stadium" placeholder="Stadium">
       </div>
+
     </div>
 
+    <!-- SUMMARY -->
     <div class="summary">
       <div class="top-text">summary</div>
 

@@ -68,7 +68,7 @@ export class NewMatchComponent {
     });
   }
 
-  public save() {
+  public save(): void {
     if (this.matchForm.valid) {
       this.calendarService.addNewMatch(this.matchForm.value).subscribe({
         next: (success) => {

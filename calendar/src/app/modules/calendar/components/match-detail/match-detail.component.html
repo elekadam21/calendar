@@ -1,10 +1,12 @@
 <div class="match-detail" *ngIf="match">
+  <!-- HEADER -->
   <div class="header">
     <nav-button [direction]="'left'" [routerLink]="['']"></nav-button>
     <div class="competition">{{ match.originCompetitionName }}</div>
     <div class="fill"></div>
   </div>
 
+  <!-- NAME AND DATE -->
   <div class="match-card" *ngIf="match">
     <div class="stage">{{ match.stage.name }}</div>
     <div class="time">
@@ -12,7 +14,10 @@
       <span>{{ ' - ' }}</span>
       <span>{{ [match.dateVenue, match.timeVenueUTC] | utcToLocal }}</span>
     </div>
+
+    <!-- MATCH DETAILS -->
     <div class="match-info">
+
       <div class="home-team">
         <div class="logo">
           <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
@@ -24,6 +29,7 @@
           {{ match.homeTeam?.teamCountryCode ? '(' + match.homeTeam?.teamCountryCode + ')' : '' }}
         </div>
       </div>
+
       <div class="center-info">
         <div class="score">
           <div class="home-score">{{ match.result?.homeGoals ? match.result?.homeGoals : ' ' }}</div>
@@ -32,7 +38,8 @@
         </div>
         <div class="status">{{ match.status }}</div>
       </div>
-      <div class="home-team">
+
+      <div class="away-team">
         <div class="logo">
           <img src="/assets/badge-placeholder.png" alt="logo-placeholder">
         </div>
@@ -43,9 +50,12 @@
           {{ match.awayTeam?.teamCountryCode ? '(' + match.awayTeam?.teamCountryCode + ')' : '' }}
         </div>
       </div>
+
     </div>
+
   </div>
 
+  <!-- SUMMARY -->
   <div class="summary">
     <div class="top-text">summary</div>
 

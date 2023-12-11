@@ -30,7 +30,7 @@ export class CalendarService {
   }
 
   /** Pushes the days of the week to an array in Date format, so they can be converted to local formats. */
-  private getWeekdays() {
+  private getWeekdays(): void {
     this.weekdays = this.weekdaysStr.map(day => {
       const date = new Date();
       date.setDate(date.getDate() + (this.weekdaysStr.indexOf(day) + 1 - date.getDay() + 7) % 7);
@@ -40,7 +40,7 @@ export class CalendarService {
 
   /** Pushes the months of the year to an array in Date format, so they can be converted to local formats.
    *  If the limit is bigger than the number of months in a year, it starts from January again. */
-  private getMonths(date: Date, limit: number = this.elementCount) {
+  private getMonths(date: Date, limit: number = this.elementCount): void {
     this.months = [];
     for (let i = 0; i < limit; i++) {
       const newDate = new Date(date.getFullYear(), i, 1);
@@ -50,7 +50,7 @@ export class CalendarService {
 
   /** Pushes the years before and after the selected date to an array in Date format. 
    *  The conditions are necessary so it only runs if the user reaches one of the ends of the shown spectrum. */
-  private getYears(date: Date, limit: number = this.elementCount) {
+  private getYears(date: Date, limit: number = this.elementCount): void {
     const year = date.getFullYear();
 
     if ((this.years.length === 0) || (this.years[0].getFullYear() === year) || (this.years[this.years.length - 1].getFullYear() === year)) {
@@ -65,7 +65,7 @@ export class CalendarService {
   }
 
   /** Populates the calendar around the selected date with 35 days and allocates the matches to the days. */
-  public populateCalendar(date: Date) {
+  public populateCalendar(date: Date): void {
     this.calendar = [];
 
     const year = date.getFullYear();
@@ -101,7 +101,7 @@ export class CalendarService {
   }
 
   /** Pushes days to the calendar. */
-  private addDaysToCalendar(start: number, end: number, isCurrentMonth: boolean, year: number, month: number) {
+  private addDaysToCalendar(start: number, end: number, isCurrentMonth: boolean, year: number, month: number): void {
     for (let i = start; i <= end; i++) {
       const currentDate = new Date(year, month, i);
       this.calendar.push(this.createCalendarDay(currentDate, isCurrentMonth));
@@ -122,7 +122,7 @@ export class CalendarService {
   }
 
   /** Allocates matches to their days. Due to having no backend this function has a workaround for new matches. */
-  private allocateMatches() {
+  private allocateMatches(): void {
     if (this.allMatches.length === 0) {
       this.calendarSourceService.getMatches().subscribe((res) => {
         res?.data.forEach(match => {
@@ -138,7 +138,7 @@ export class CalendarService {
   }
 
   /** Processes a match to its day and changes the hasEvent property to true. */
-  private processMatch(match: Match) {
+  private processMatch(match: Match): void {
     const matchDay = this.calendar.find(day => day.dateStr === match.dateVenue);
 
     if (matchDay) {
@@ -148,13 +148,13 @@ export class CalendarService {
   }
 
   /** Sets selectedDate and sets up the selected CalendarDay. */
-  public selectDate(date: Date) {
+  public selectDate(date: Date): void {
     this.selectedDate = date;
     this.selectDay(date);
   }
 
   /** Looks up and sets the selected CalendarDay. */
-  private selectDay(date: Date) {
+  private selectDay(date: Date): void {
     const day = this.calendar.find((day) => (
       (day.date.getFullYear() === date.getFullYear()) &&
       (day.date.getMonth() === date.getMonth()) &&
@@ -164,7 +164,7 @@ export class CalendarService {
   }
 
   /** Loads the new dates to the calendar. If the change is to the current month, it selects the current day. */
-  public changeDate(date: Date) {
+  public changeDate(date: Date): void {
     if (this.isCurrentMonth(date)) {
       this.populateCalendar(this.today);
       this.selectDate(this.today);
@@ -176,19 +176,19 @@ export class CalendarService {
   }
 
   /** Sets the selected year and loads the new months. */
-  public selectYear(date: Date) {
+  public selectYear(date: Date): void {
     this.selectedYear = date;
     this.getMonths(date);
     this.displayedDate = new Date(date);
   }
 
   /** Returns true if the given month is the current month. */
-  private isCurrentMonth(date: Date) {
+  private isCurrentMonth(date: Date): boolean {
     return (date.getFullYear() === this.today.getFullYear()) && (date.getMonth() === this.today.getMonth())
   }
 
   /** Formats a Date type to 'YYYY-MM-DD' string format. */
-  public formatDateToString(date: Date) {
+  public formatDateToString(date: Date): string {
     return `${date.getFullYear()}-${(date.getMonth() + 1)}-${(date.getDate() < 10 ? '0' : '')}${date.getDate()}`;
   }
 
@@ -221,7 +221,7 @@ export class CalendarService {
   }
 
   /** Adds new match to the calendar. */
-  public addNewMatch(match: Match) {
+  public addNewMatch(match: Match): Observable<boolean> {
     return this.generateMatchId().pipe(
       switchMap(id => {
         match.matchId = id;

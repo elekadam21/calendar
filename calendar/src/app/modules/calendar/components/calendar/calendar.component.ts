@@ -31,7 +31,7 @@ export class CalendarComponent {
 
   }
 
-  public switchMonthYearSelector() {
+  public switchMonthYearSelector(): void {
     switch (this.view) {
       case CalendarView.NORMAL:
         this.view = CalendarView.MONTH_SELECT;
@@ -49,7 +49,7 @@ export class CalendarComponent {
     this.openCalendar();
   }
 
-  public isSelected(item: Date, type: string) {
+  public isSelected(item: Date, type: string): boolean {
     const selectedDate = this.calendarService.selectedDate;
 
     switch (type) {
@@ -65,29 +65,29 @@ export class CalendarComponent {
     }
   }
 
-  public openCalendar() {
+  public openCalendar(): void {
     this.isCalendarCollapsed = false;
   }
 
-  public selectDate(day: CalendarDay) {
+  public selectDate(day: CalendarDay): void {
     this.calendarService.selectDate(day.date);
     if (day.matches.length) {
       this.isCalendarCollapsed = true;
     }
   }
 
-  public selectMonth(date: Date) {
+  public selectMonth(date: Date): void {
     const newDate = new Date(this.calendarService.selectedYear.getFullYear(), date.getMonth(), 1)
     this.calendarService.changeDate(newDate);
     this.view = CalendarView.NORMAL;
   }
 
-  public selectYear(date: Date) {
+  public selectYear(date: Date): void {
     this.calendarService.selectYear(date);
     this.view = CalendarView.MONTH_SELECT;
   }
 
-  public nextOrPrev(num: number) {
+  public nextOrPrev(num: number): void {
     switch (this.view) {
       case CalendarView.NORMAL:
         const normalDate = new Date(this.calendarService.displayedDate.getFullYear(), this.calendarService.displayedDate.getMonth() + num, 1);

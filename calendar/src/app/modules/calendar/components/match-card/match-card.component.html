@@ -1,3 +1,4 @@
+<!-- IF THE GAME IS PLAYED -->
 <div class="match-card" *ngIf="(match.status === 'played'); else scheduled">
   <div class="competition">{{ match.originCompetitionName }}</div>
   <div class="time">{{ [match.dateVenue, match.timeVenueUTC] | utcToLocal }}</div>
@@ -29,6 +30,7 @@
   </div>
 </div>
 
+<!-- IF THE GAME IS SCHEDULED -->
 <ng-template #scheduled>
   <div class="match-card">
     <div class="competition">{{ match.originCompetitionName }}</div>

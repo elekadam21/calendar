@@ -78,12 +78,14 @@
   </div>
 </div>
 
+<!-- IF NO MATCHES ON DAY -->
 <ng-template #noMatches>
   <div class="no-matches">
     <span>No matches on this day</span>
   </div>
 </ng-template>
 
+<!-- MATCH LIST -->
 <ng-container *ngIf="calendarService.selectedDay?.matches?.length; else noMatches">
   <div class="match-list">
     <match-card *ngFor="let match of calendarService.selectedDay?.matches" [match]="match"
@@ -91,5 +93,5 @@
   </div>
 </ng-container>
 
-
+<!-- ADD NEW MATCH BUTTON -->
 <float-button [routerLink]="['/new-match']"></float-button>
