@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { DeviceService } from './services/device.service';
 
 @Component({
@@ -16,11 +16,5 @@ export class AppComponent {
   ngOnInit() {
     this.deviceService.screenWidth = window.innerWidth;
     this.deviceService.screenHeight = window.innerHeight;      
-  }
-  
-  @HostListener('window:resize', ['$event'])
-  onWindowResize() {
-    this.deviceService.screenWidth = window.innerWidth;
-    this.deviceService.screenHeight = window.innerHeight;
   }
 }
