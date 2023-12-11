@@ -95,7 +95,7 @@ export class CalendarComponent {
         break;
       case CalendarView.MONTH_SELECT:
         const monthDate = new Date(this.calendarService.displayedDate.getFullYear() + num, this.calendarService.displayedDate.getMonth(), 1);
-        this.calendarService.getMonths(monthDate);
+        this.calendarService.changeDate(monthDate);
         break;
       case CalendarView.YEAR_SELECT:
         const yearDate = new Date(this.calendarService.displayedDate.getFullYear() + num, this.calendarService.displayedDate.getMonth(), 1);

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { CalendarDay } from "../interfaces/calendar.interface";
 import { CalendarSourceService } from "./calendar-source.service";
 import { Match } from "../interfaces/match.interface";
-import { Observable, Observer, map, of } from "rxjs";
+import { Observable, of, switchMap } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class CalendarService {
   weekdays: Date[] = [];
   months: Date[] = [];
   years: Date[] = [];
-  elementCount = 16;
+  elementCount = 16; // the total number of cells in the calendar
 
   calendar: CalendarDay[] = [];
   allMatches: Match[] = [];
@@ -29,6 +29,7 @@ export class CalendarService {
     this.getWeekdays();
   }
 
+  /** Pushes the days of the week to an array in Date format, so they can be converted to local formats. */
   private getWeekdays() {
     this.weekdays = this.weekdaysStr.map(day => {
       const date = new Date();
@@ -37,33 +38,33 @@ export class CalendarService {
     })
   }
 
-  public getMonths(date: Date, limit: number = this.elementCount) {
+  /** Pushes the months of the year to an array in Date format, so they can be converted to local formats.
+   *  If the limit is bigger than the number of months in a year, it starts from January again. */
+  private getMonths(date: Date, limit: number = this.elementCount) {
     this.months = [];
     for (let i = 0; i < limit; i++) {
       const newDate = new Date(date.getFullYear(), i, 1);
       this.months.push(newDate);
     }
-    this.displayedDate = new Date(date.getFullYear(), date.getMonth(), 1);
   }
 
+  /** Pushes the years before and after the selected date to an array in Date format. 
+   *  The conditions are necessary so it only runs if the user reaches one of the ends of the shown spectrum. */
   private getYears(date: Date, limit: number = this.elementCount) {
     const year = date.getFullYear();
 
     if ((this.years.length === 0) || (this.years[0].getFullYear() === year) || (this.years[this.years.length - 1].getFullYear() === year)) {
       this.years = [];
 
-      for (let i = 4; i >= 0; i--) {
-        const date = new Date(year - i, 0, 1);
-        this.years.push(date);
-      }
-
-      for (let i = 1; i < (limit - 4); i++) {
-        const date = new Date(year + i, 0, 1);
-        this.years.push(date);
+      for (let i = 0; i < limit; i++) {
+        const newYear = year - 4 + i;
+        const newDate = new Date(newYear, 0, 1);
+        this.years.push(newDate);
       }
     }
   }
 
+  /** Populates the calendar around the selected date with 35 days and allocates the matches to the days. */
   public populateCalendar(date: Date) {
     this.calendar = [];
 
@@ -73,70 +74,41 @@ export class CalendarService {
     const firstDay = new Date(year, month, 1).getDay();
     const lastDay = new Date(year, month, daysInMonth).getDay();
 
-    // Add days from the month previous to the selected
-    for (let i = firstDay - 1; i > 0; i--) {
-      const prevMonthDate = new Date(year, month, 1 - i);
-      this.calendar.push(this.createCalendarDay(prevMonthDate, false));
-    }
+    // Add days from the month previous to the selected of needed
+    this.addDaysToCalendar(2 - firstDay, 0, false, year, month)
 
     // Add days from the selected month
-    for (let i = 1; i <= daysInMonth; i++) {
-      const selectedDate = new Date(year, month, i);
-      this.calendar.push(this.createCalendarDay(selectedDate, true));
-    }
+    this.addDaysToCalendar(1, daysInMonth, true, year, month);
 
     // Add days from the month after if needed
     const daysToAdd = lastDay !== 0 ? 7 - lastDay : 0;
-
-    for (let i = 1; i <= daysToAdd; i++) {
-      const nextMonthDate = new Date(year, month + 1, i);
-      this.calendar.push(this.createCalendarDay(nextMonthDate, false));
-    }
+    this.addDaysToCalendar(1, daysToAdd, false, year, month + 1);
 
     // Handle the case when the calendar has 28 days
     if (this.calendar.length === 28) {
-      for (let i = 1; i <= 7; i++) {
-        const prevMonthDate = new Date(year, month, 1 - i);
-        console.log(prevMonthDate.toString());
-
-        this.calendar.unshift(this.createCalendarDay(prevMonthDate, false));
-      }
+      this.addDaysToCalendar(1, 7, false, year, month + 1);
     }
+
     this.getMonths(date);
     this.getYears(date);
     this.allocateMatches();
 
+    // Selects the current date on first load
     if (!this.selectedDay) {
       const today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate())
       this.selectDay(today);
     }
   }
 
-  private allocateMatches() {
-    if (this.allMatches.length === 0) {
-      this.calendarSourceService.getMatches().subscribe((res) => {
-        res?.data.forEach(match => {
-          this.allMatches.push(match);
-          const matchDay = this.calendar.find((day) => day.dateStr === match.dateVenue);
-  
-          if (matchDay) {
-            matchDay.matches.push(match);
-            matchDay.hasEvent = true;
-          }
-        });
-      });
-    } else {
-      this.allMatches.forEach(match => {
-        const matchDay = this.calendar.find((day) => day.dateStr === match.dateVenue);
-
-        if (matchDay) {
-          matchDay.matches.push(match);
-          matchDay.hasEvent = true;
-        }
-      });
+  /** Pushes days to the calendar. */
+  private addDaysToCalendar(start: number, end: number, isCurrentMonth: boolean, year: number, month: number) {
+    for (let i = start; i <= end; i++) {
+      const currentDate = new Date(year, month, i);
+      this.calendar.push(this.createCalendarDay(currentDate, isCurrentMonth));
     }
   }
 
+  /** Creates a calendar day for the calendar. */
   private createCalendarDay(date: Date, currentMonth: boolean): CalendarDay {
     return {
       date: date,
@@ -149,22 +121,49 @@ export class CalendarService {
     };
   }
 
+  /** Allocates matches to their days. Due to having no backend this function has a workaround for new matches. */
+  private allocateMatches() {
+    if (this.allMatches.length === 0) {
+      this.calendarSourceService.getMatches().subscribe((res) => {
+        res?.data.forEach(match => {
+          this.allMatches.push(match);
+          this.processMatch(match);
+        });
+      });
+    } else {
+      this.allMatches.forEach(match => {
+        this.processMatch(match);
+      });
+    }
+  }
+
+  /** Processes a match to its day and changes the hasEvent property to true. */
+  private processMatch(match: Match) {
+    const matchDay = this.calendar.find(day => day.dateStr === match.dateVenue);
+
+    if (matchDay) {
+      matchDay.matches.push(match);
+      matchDay.hasEvent = true;
+    }
+  }
+
+  /** Sets selectedDate and sets up the selected CalendarDay. */
   public selectDate(date: Date) {
     this.selectedDate = date;
     this.selectDay(date);
   }
 
+  /** Looks up and sets the selected CalendarDay. */
   private selectDay(date: Date) {
     const day = this.calendar.find((day) => (
       (day.date.getFullYear() === date.getFullYear()) &&
       (day.date.getMonth() === date.getMonth()) &&
       (day.date.getDate() === date.getDate())))
 
-    if (day) {
-      this.selectedDay = day;
-          }
+    this.selectedDay = day!;
   }
 
+  /** Loads the new dates to the calendar. If the change is to the current month, it selects the current day. */
   public changeDate(date: Date) {
     if (this.isCurrentMonth(date)) {
       this.populateCalendar(this.today);
@@ -176,67 +175,63 @@ export class CalendarService {
     }
   }
 
+  /** Sets the selected year and loads the new months. */
   public selectYear(date: Date) {
     this.selectedYear = date;
     this.getMonths(date);
     this.displayedDate = new Date(date);
   }
 
+  /** Returns true if the given month is the current month. */
   private isCurrentMonth(date: Date) {
     return (date.getFullYear() === this.today.getFullYear()) && (date.getMonth() === this.today.getMonth())
   }
 
+  /** Formats a Date type to 'YYYY-MM-DD' string format. */
   public formatDateToString(date: Date) {
     return `${date.getFullYear()}-${(date.getMonth() + 1)}-${(date.getDate() < 10 ? '0' : '')}${date.getDate()}`;
   }
 
-  public formatStringToDate(date: string) {
-    return new Date(date);
-  }
-
-  getMatchById(id: string): Observable<Match> {
-    // how it should work with a backend
+  /** Returns the right match with the given id. It is an Observable due to how I originally tried to replicate a backend. */
+  public getMatchById(id: string): Observable<Match> {
+    // How it should work with a backend
     // return this.calendarSourceService.getMatches().pipe(
     //   map((res) => {
     //     const match = res?.data.find((match) => match.matchId === id);
     //     return match!;
     //   })
     // );  
-    const match = this.allMatches.find((match)=> match.matchId === id)  
+    const match = this.allMatches.find((match) => match.matchId === id)
     return of(match!);
   }
 
-  generateMatchId() {
-    return this.calendarSourceService.getMatches().pipe(
-      map((res) => {
-        let newId: string;
-        const ids: number[] = [];
-        res.data.map((match) => ids.push(parseInt(match.matchId)))
-        ids.sort().reverse();
-        if (ids.length) {
-          newId = (ids[0] + 1).toString();
-        } else {
-          newId = '1';
-        }
-
-        return newId;
-      })
-    );
+  /** Generates a new id that will not conflict with existing ids. It is an Observable due to how I originally tried to replicate a backend.*/
+  private generateMatchId(): Observable<string> {
+    // How it should work with a backend
+    // return this.calendarSourceService.getMatches().pipe(
+    //   map((res) => {
+    //     const ids = res.data.map(match => parseInt(match.matchId));
+    //     const newId = ids.length ? (Math.max(...ids) + 1).toString() : '1';
+    //     return newId;
+    //   })
+    // );
+    const ids = this.allMatches.map(match => parseInt(match.matchId));
+    const newId = ids.length ? (Math.max(...ids) + 1).toString() : '1';
+    return of(newId);
   }
 
-  addNewMatch(match: Match) {
-    return new Observable<boolean>((observer: Observer<boolean>) => {
-      this.generateMatchId().subscribe((id) => {
+  /** Adds new match to the calendar. */
+  public addNewMatch(match: Match) {
+    return this.generateMatchId().pipe(
+      switchMap(id => {
         match.matchId = id;
         this.allMatches.push(match);
-        this.calendar.forEach((day) => {
-          if (day.dateStr === match.dateVenue) {
-            day.matches.push(match);
-            day.hasEvent = true;            
-          }
-        });
-        observer.next(true);
-      });
-    });
+
+        this.selectedDay.matches.push(match);
+        this.selectedDay.hasEvent = true;
+
+        return of(true);
+      })
+    );
   }
 }
