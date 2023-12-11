@@ -11,10 +11,10 @@ import { UiKitModule } from "../uikit/uikit.module";
 
 @NgModule({
   imports: [
+    UiKitModule,
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(calendarRoutes),
-    UiKitModule,
   ],
   declarations: [
     CalendarComponent,

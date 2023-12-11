@@ -4,12 +4,6 @@ import { CalendarSourceService } from "./calendar-source.service";
 import { Match } from "../interfaces/match.interface";
 import { Observable, Observer, map, of } from "rxjs";
 
-export enum CalendarView {
-  NORMAL,
-  MONTH_SELECT,
-  YEAR_SELECT
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -22,11 +16,12 @@ export class CalendarService {
 
   calendar: CalendarDay[] = [];
   allMatches: Match[] = [];
+
   today: Date = new Date();
   selectedDate: Date = new Date();
+  selectedDay: CalendarDay;
   selectedYear: Date = this.today;
   displayedDate: Date = this.today;
-  selectedDay: CalendarDay;
 
   constructor(
     private calendarSourceService: CalendarSourceService
@@ -40,7 +35,6 @@ export class CalendarService {
       date.setDate(date.getDate() + (this.weekdaysStr.indexOf(day) + 1 - date.getDay() + 7) % 7);
       return date;
     })
-
   }
 
   public getMonths(date: Date, limit: number = this.elementCount) {

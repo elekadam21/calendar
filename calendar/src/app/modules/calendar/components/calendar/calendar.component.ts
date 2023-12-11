@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CalendarDay } from '../../interfaces/calendar.interface';
-import { CalendarService, CalendarView } from '../../services/calendar.service';
+import { CalendarService } from '../../services/calendar.service';
 import { DeviceService } from 'src/app/services/device.service';
+import { CalendarView } from '../../enums/calendarview.enum';
 
 @Component({
   selector: 'calendar',
