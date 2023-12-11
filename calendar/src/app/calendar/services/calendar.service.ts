@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { CalendarDay } from "../interfaces/calendar.interface";
 import { CalendarSourceService } from "./calendar-source.service";
 import { Match } from "../interfaces/match.interface";
-import { Observable, map } from "rxjs";
+import { Observable, Observer, map, of } from "rxjs";
 
 export enum CalendarView {
   NORMAL,
@@ -21,6 +21,7 @@ export class CalendarService {
   elementCount = 16;
 
   calendar: CalendarDay[] = [];
+  allMatches: Match[] = [];
   today: Date = new Date();
   selectedDate: Date = new Date();
   selectedYear: Date = this.today;
@@ -118,16 +119,28 @@ export class CalendarService {
   }
 
   private allocateMatches() {
-    this.calendarSourceService.getMatches().subscribe((res) => {
-      res?.data.forEach(match => {
+    if (this.allMatches.length === 0) {
+      this.calendarSourceService.getMatches().subscribe((res) => {
+        res?.data.forEach(match => {
+          this.allMatches.push(match);
+          const matchDay = this.calendar.find((day) => day.dateStr === match.dateVenue);
+  
+          if (matchDay) {
+            matchDay.matches.push(match);
+            matchDay.hasEvent = true;
+          }
+        });
+      });
+    } else {
+      this.allMatches.forEach(match => {
         const matchDay = this.calendar.find((day) => day.dateStr === match.dateVenue);
 
         if (matchDay) {
           matchDay.matches.push(match);
+          matchDay.hasEvent = true;
         }
-
       });
-    });
+    }
   }
 
   private createCalendarDay(date: Date, currentMonth: boolean): CalendarDay {
@@ -155,7 +168,7 @@ export class CalendarService {
 
     if (day) {
       this.selectedDay = day;
-    }
+          }
   }
 
   public changeDate(date: Date) {
@@ -188,12 +201,15 @@ export class CalendarService {
   }
 
   getMatchById(id: string): Observable<Match> {
-    return this.calendarSourceService.getMatches().pipe(
-      map((res) => {
-        const match = res?.data.find((match) => match.matchId === id);
-        return match!;
-      })
-    );
+    // how it should work with a backend
+    // return this.calendarSourceService.getMatches().pipe(
+    //   map((res) => {
+    //     const match = res?.data.find((match) => match.matchId === id);
+    //     return match!;
+    //   })
+    // );  
+    const match = this.allMatches.find((match)=> match.matchId === id)  
+    return of(match!);
   }
 
   generateMatchId() {
@@ -215,13 +231,18 @@ export class CalendarService {
   }
 
   addNewMatch(match: Match) {
-    this.generateMatchId().subscribe((id) => {
-      match.matchId = id;
-      this.calendar.forEach((day) => {
-        if (day.dateStr === match.dateVenue) {
-          day.matches.push(match)
-        }
-      })
+    return new Observable<boolean>((observer: Observer<boolean>) => {
+      this.generateMatchId().subscribe((id) => {
+        match.matchId = id;
+        this.allMatches.push(match);
+        this.calendar.forEach((day) => {
+          if (day.dateStr === match.dateVenue) {
+            day.matches.push(match);
+            day.hasEvent = true;            
+          }
+        });
+        observer.next(true);
+      });
     });
   }
 }

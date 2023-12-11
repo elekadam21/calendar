@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { CalendarService } from "../../services/calendar.service";
 import { Match, Result, Stage, Team } from "../../interfaces/match.interface";
@@ -20,8 +20,6 @@ export class NewMatchComponent {
   ) { }
 
   ngOnInit() {
-    console.log(this.calendarService.selectedDate);
-
     this.isPlayed = (this.calendarService.selectedDate < this.calendarService.today)
 
     this.matchForm = this.formBuilder.group({
@@ -72,8 +70,17 @@ export class NewMatchComponent {
 
   public save() {
     if (this.matchForm.valid) {
-      this.calendarService.addNewMatch(this.matchForm.value);
-      this.router.navigate([''])
+      this.calendarService.addNewMatch(this.matchForm.value).subscribe({
+        next: (success) => {
+          if (success) {
+            this.router.navigate(['']);
+          }
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
+      });
     }
+
   }
 }

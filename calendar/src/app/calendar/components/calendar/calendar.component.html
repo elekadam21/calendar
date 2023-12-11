@@ -48,8 +48,8 @@
           [class.selected]="isSelected(calendarService.calendar[(i*7)+j].date, 'date')"
           (click)="selectDate(calendarService.calendar[(i*7)+j])">
           <span>{{ calendarService.calendar[(i*7)+j].dateShort }}</span>
-          <span class="dot" *ngIf="calendarService.calendar[(i*7)+j].matches.length"></span>
-          <span class="empty" *ngIf="!calendarService.calendar[(i*7)+j].matches.length"></span>
+          <span class="dot" *ngIf="calendarService.calendar[(i*7)+j].hasEvent"></span>
+          <span class="empty" *ngIf="!calendarService.calendar[(i*7)+j].hasEvent"></span>
         </div>
       </div>
     </div>
